@@ -17,8 +17,15 @@ func NewSpritesheet(row, col, tw, th int) *Spritesheet {
 	}
 }
 
-func (sheet *Spritesheet) Cell(cell int) []int {
-	return []int{cell}
+func (sheet *Spritesheet) Row(r int) []int {
+	var clip = []int{}
+	var rowStart = r * sheet.Cols
+
+	for i := rowStart; i < (rowStart + sheet.Cols); i++ {
+		clip = append(clip, i)
+	}
+
+	return clip
 }
 
 func (sheet *Spritesheet) Cells(cells []int) []int {
@@ -30,15 +37,8 @@ func (sheet *Spritesheet) Cells(cells []int) []int {
 	return cells
 }
 
-func (sheet *Spritesheet) Row(r int) []int {
-	var clip = []int{}
-	var rowStart = r * sheet.Cols
-
-	for i := rowStart; i < (rowStart + sheet.Cols); i++ {
-		clip = append(clip, i)
-	}
-
-	return clip
+func (sheet *Spritesheet) Cell(cell int) []int {
+	return []int{cell}
 }
 
 func (sheet *Spritesheet) Col(c int) []int {
@@ -58,7 +58,7 @@ type Animation struct {
 	Layer   int
 	OffsetX int
 	OffsetY int
-  FPS     int
+	FPS     int
 }
 
 func NewAnimation(name string, frames []int) *Animation {
@@ -92,8 +92,8 @@ type AnimationOpt func(anim *Animation)
 
 func WithFPS(fps int) AnimationOpt {
 	return func(anim *Animation) {
-    anim.FPS = fps
-  }
+		anim.FPS = fps
+	}
 }
 
 func WithOffset(x, y int) AnimationOpt {
@@ -131,9 +131,9 @@ func (a *AnimationMap) IsPlaying(name string) bool {
 }
 
 func (a *AnimationMap) Update() {
-  var animation = a.Animations[a.State]
+	var animation = a.Animations[a.State]
 	a.CurrentFrameIdx = int(a.Tick) % len(animation.Frames)
-  a.Tick += (float64(animation.FPS)/float64(ebiten.TPS()))
+	a.Tick += (float64(animation.FPS) / float64(ebiten.TPS()))
 }
 
 func (a *AnimationMap) Animation() *Animation {
