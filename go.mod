@@ -1,4 +1,4 @@
-module ebitengine-animations
+module github.com/nassorc/ebitengine-animations
 
 go 1.23
 
